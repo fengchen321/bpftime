@@ -12,7 +12,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <ctime>
-#include <filesystem>
+#include "bpftime_filesystem.hpp"
 #include "bpftime.hpp"
 #include "bpftime_shm.hpp"
 #include "bpftime_internal.h"
@@ -29,7 +29,7 @@ using namespace std;
 uint64_t bpftime_get_abs_path(const char *filename, const char *buffer,
 			      uint64_t size)
 {
-	auto path = std::filesystem::absolute(filename);
+	auto path = bpftime_fs::absolute(filename);
 	return (uint64_t)(uintptr_t)strncpy((char *)(uintptr_t)buffer,
 					    path.c_str(), size);
 }
@@ -37,8 +37,8 @@ uint64_t bpftime_get_abs_path(const char *filename, const char *buffer,
 uint64_t bpftime_path_join(const char *filename1, const char *filename2,
 			   const char *buffer, uint64_t size)
 {
-	auto path = std::filesystem::path(filename1) /
-		    std::filesystem::path(filename2);
+	auto path = bpftime_fs::path(filename1) /
+		    bpftime_fs::path(filename2);
 	return (uint64_t)(uintptr_t)strncpy((char *)(uintptr_t)buffer,
 					    path.c_str(), size);
 }

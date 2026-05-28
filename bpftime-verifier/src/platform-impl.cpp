@@ -18,8 +18,8 @@ using namespace bpftime;
 static EbpfProgramType bpftime_get_program_type(const std::string &section,
 						const std::string &path)
 {
-	if (section.starts_with("uprobe") || section.starts_with("uretprobe") ||
-	    section.starts_with("tracepoint")) {
+	if (section.find("uprobe") == 0 || section.find("uretprobe") == 0 ||
+	    section.find("tracepoint") == 0) {
 		return g_ebpf_platform_linux.get_program_type(section, path);
 	} else {
 		throw std::runtime_error(

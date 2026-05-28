@@ -11,7 +11,7 @@
 #endif
 #include "syscall_context.hpp"
 #include <fcntl.h>
-#include <filesystem>
+#include "bpftime_filesystem.hpp"
 #include <memory>
 #include <mutex>
 #include <spdlog/cfg/env.h>
@@ -131,7 +131,7 @@ static int parse_uint_from_file(const char *file, const char *fmt)
 
 int determine_uprobe_perf_type()
 {
-	if (!std::filesystem::exists(UPROBE_TYPE_FILE_NAME)) {
+	if (!bpftime_fs::exists(UPROBE_TYPE_FILE_NAME)) {
 		SPDLOG_DEBUG("Using mocked uporbe type value {} for file {}",
 			     MOCKED_UPROBE_TYPE_VALUE, UPROBE_TYPE_FILE_NAME);
 		return MOCKED_UPROBE_TYPE_VALUE;
@@ -141,7 +141,7 @@ int determine_uprobe_perf_type()
 
 int determine_uprobe_retprobe_bit()
 {
-	if (!std::filesystem::exists(URETPROBE_BIT_FILE_NAME)) {
+	if (!bpftime_fs::exists(URETPROBE_BIT_FILE_NAME)) {
 		SPDLOG_DEBUG("Using mocked uretprobe bit value {} for file {}",
 			     MOCKED_URETPROBE_BIT, URETPROBE_BIT_FILE_NAME);
 		return MOCKED_URETPROBE_BIT;
@@ -151,7 +151,7 @@ int determine_uprobe_retprobe_bit()
 }
 int determine_kprobe_perf_type()
 {
-	if (!std::filesystem::exists(KPROBE_TYPE_FILE_NAME)) {
+	if (!bpftime_fs::exists(KPROBE_TYPE_FILE_NAME)) {
 		SPDLOG_DEBUG("Using mocked kprobe type value {} for file {}",
 			     MOCKED_KPROBE_TYPE_VALUE, KPROBE_TYPE_FILE_NAME);
 		return MOCKED_KPROBE_TYPE_VALUE;
@@ -160,7 +160,7 @@ int determine_kprobe_perf_type()
 }
 int determine_kprobe_retprobe_bit()
 {
-	if (!std::filesystem::exists(KRETPROBE_BIT_FILE_NAME)) {
+	if (!bpftime_fs::exists(KRETPROBE_BIT_FILE_NAME)) {
 		SPDLOG_DEBUG("Using mocked uretprobe bit value {} for file {}",
 			     MOCKED_KRETPROBE_BIT, KRETPROBE_BIT_FILE_NAME);
 		return MOCKED_KRETPROBE_BIT;
@@ -169,7 +169,7 @@ int determine_kprobe_retprobe_bit()
 				    "config:%d\n");
 }
 std::optional<std::unique_ptr<mocked_file_provider>>
-create_mocked_file_based_on_full_path(const std::filesystem::path &path)
+create_mocked_file_based_on_full_path(const bpftime_fs::path &path)
 {
 	if (path == UPROBE_TYPE_FILE_NAME) {
 		SPDLOG_DEBUG("{} is uprobe type file", path.c_str());
@@ -193,27 +193,27 @@ create_mocked_file_based_on_full_path(const std::filesystem::path &path)
 	}
 }
 
-std::optional<std::filesystem::path>
+std::optional<bpftime_fs::path>
 resolve_filename_and_fd_to_full_path(int fd, const char *file)
 {
 	if (file == nullptr) {
 		return {};
 	}
 	if (file[0] == '/') {
-		return std::filesystem::path(file);
+		return bpftime_fs::path(file);
 	}
 	if (fd == AT_FDCWD) {
-		return std::filesystem::path(file);
+		return bpftime_fs::path(file);
 	}
 	std::error_code ec;
-	auto dir_path = std::filesystem::read_symlink(
+	auto dir_path = bpftime_fs::read_symlink(
 		"/proc/self/fd/" + std::to_string(fd), ec);
 	if (dir_path.empty()) {
 		SPDLOG_ERROR("Unable to read exact path of fd {}, error={}: ",
 			     fd, ec.value(), ec.message());
 		return {};
 	}
-	if (!std::filesystem::is_directory(dir_path)) {
+	if (!bpftime_fs::is_directory(dir_path)) {
 		SPDLOG_ERROR("fd {}, referring {}, is not a directory", fd,
 			     dir_path.c_str());
 		return {};

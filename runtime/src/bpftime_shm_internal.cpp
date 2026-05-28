@@ -973,7 +973,7 @@ void bpftime_shm::set_agent_config(struct agent_config &&config)
 	}
 
 	agent_config->~agent_config();
-	std::construct_at(agent_config, std::move(config));
+	new (agent_config) struct agent_config(std::move(config));
 }
 
 const struct agent_config &bpftime_shm::get_agent_config()

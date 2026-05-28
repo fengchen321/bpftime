@@ -13,6 +13,11 @@
 #include <cstdint>
 #include <pthread.h>
 #endif
+#if __linux__
+#include <sys/syscall.h>
+#include <unistd.h>
+#endif
+
 #ifdef BPFTIME_BUILD_WITH_LIBBPF
 #include "bpf/bpf.h"
 #include "bpf/libbpf_common.h"
@@ -32,7 +37,6 @@
 #include <time.h>
 #include <unistd.h>
 #include <ctime>
-#include <filesystem>
 #include "bpftime.hpp"
 #include "bpftime_shm.hpp"
 #include "bpftime_internal.h"
@@ -322,7 +326,7 @@ uint64_t bpftime_get_current_pid_tgid(uint64_t, uint64_t, uint64_t, uint64_t,
 #if __linux__
 	static thread_local int tid = -1;
 	if (tid == -1) {
-		tid = gettid();
+		tid = (int)syscall(SYS_gettid);
 	}
 #elif __APPLE__
 	static thread_local uint64_t tid = UINT64_MAX; // cannot use int because

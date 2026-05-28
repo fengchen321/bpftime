@@ -70,7 +70,7 @@ TEST_CASE("Test with backtrace")
 				auto expected_name = std::string(
 					"__bpftime_test_attach_with_back_trace__func");
 				REQUIRE(std::string(debug_details.symbol_name)
-						.starts_with(expected_name));
+						.find(expected_name) == 0);
 			}
 
 			delete stack;

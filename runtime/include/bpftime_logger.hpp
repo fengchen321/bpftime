@@ -5,7 +5,6 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include <cstdlib>
 #include <iostream>
-#include <filesystem>
 #include <fstream>
 
 namespace bpftime

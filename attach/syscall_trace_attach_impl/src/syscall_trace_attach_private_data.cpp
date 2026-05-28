@@ -33,10 +33,10 @@ int syscall_trace_attach_private_data::initialize_from_string(
 				std::get<0>(get_global_syscall_id_table());
 			std::string syscall_name;
 			bool is_enter;
-			if (name.starts_with("sys_enter_")) {
+			if (name.find("sys_enter_") == 0) {
 				syscall_name = name.substr(10);
 				is_enter = true;
-			} else if (name.starts_with("sys_exit_")) {
+			} else if (name.find("sys_exit_") == 0) {
 				syscall_name = name.substr(9);
 				is_enter = false;
 			}

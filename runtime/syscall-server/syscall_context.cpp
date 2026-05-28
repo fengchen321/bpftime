@@ -37,6 +37,7 @@
 #include "syscall_server_utils.hpp"
 #include <optional>
 #include <sys/mman.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 #include <regex>
 
@@ -719,7 +720,7 @@ int syscall_context::handle_perfevent(perf_event_attr *attr, pid_t pid, int cpu,
 		int new_fd = -1;
 		std::string new_probe_name = name;
 		// When running with kernel, probe names started with `cuda_` will be treated as cuda probe
-		if (name.starts_with("cuda_") && run_with_kernel) {
+		if (name.find("cuda_") == 0 && run_with_kernel) {
 			auto new_attr = *attr;
 			new_attr.config1 = (uintptr_t)"do_exit";
 			new_attr.config2 = 0;

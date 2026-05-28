@@ -192,11 +192,11 @@ int bpf_attach_ctx::instantiate_handler_at(const handler_manager *manager,
 					   bool handle_nv_attach_impl)
 {
 	SPDLOG_DEBUG("Instantiating handler at {}", id);
-	if (instantiated_handlers.contains(id)) {
+	if (instantiated_handlers.find(id) != instantiated_handlers.end()) {
 		SPDLOG_DEBUG("Handler {} already instantiated", id);
 		return 0;
 	}
-	if (stk.contains(id)) {
+	if (stk.find(id) != stk.end()) {
 		SPDLOG_CRITICAL("Loop detected when instantiating handler {}",
 				id);
 		return -1;

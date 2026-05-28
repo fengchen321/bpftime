@@ -64,6 +64,7 @@ if(${BPFTIME_BUILD_WITH_LIBBPF})
     -lpthread
     -lm
     -ldl
+    -lrt
     spdlog::spdlog
     bpftime_frida_uprobe_attach_impl
     bpftime_syscall_trace_attach_impl
@@ -87,6 +88,7 @@ else()
 		-lpthread
     -lm
     -ldl
+    -lrt
     spdlog::spdlog
     bpftime_frida_uprobe_attach_impl
     ${EXTRA_LINK_LIBS}

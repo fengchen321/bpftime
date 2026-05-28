@@ -753,7 +753,7 @@ nv_attach_impl::extract_ptxs(std::vector<uint8_t> &&data_vec)
 					continue;
 				auto name = entry.path().filename().string();
 				if (name != "cuda" &&
-				    !name.starts_with("cuda-"))
+				    !name.find("cuda-") == 0)
 					continue;
 				auto cand = entry.path() / "bin" / "cuobjdump";
 				if (exists(cand))

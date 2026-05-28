@@ -43,8 +43,8 @@ std::string add_semicolon_for_variable_lines(std::string input)
 	result.reserve(input.size() + 8);
 	for_each_line(input, [&](std::string_view line) {
 		result.append(line);
-		if ((line.starts_with(".align") ||
-		     line.starts_with(".global")) &&
+		if ((line.find(".align") == 0 ||
+		     line.find(".global") == 0) &&
 		    !line.ends_with(";") && line.ends_with("}")) {
 			result.push_back(';');
 			SPDLOG_DEBUG("Patching line: {}", line);
@@ -78,7 +78,7 @@ std::string filter_compiled_ptx_for_ebpf_program(std::string input,
 		// if(line.starts_with)
 		bool skip = false;
 		for (const auto &prefix : FILTERED_OUT_PREFIXES) {
-			if (line.starts_with(prefix)) {
+			if (line.find(prefix) == 0) {
 				skip = true;
 				break;
 			}

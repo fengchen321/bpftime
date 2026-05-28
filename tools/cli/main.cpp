@@ -587,7 +587,7 @@ static std::string resolve_cuobjdump_path()
 			if (!entry.is_directory())
 				continue;
 			auto name = entry.path().filename().string();
-			if (name != "cuda" && !name.starts_with("cuda-"))
+			if (name != "cuda" && !name.find("cuda-") == 0)
 				continue;
 			auto cand = entry.path() / "bin" / "cuobjdump";
 			if (exists(cand))
@@ -714,9 +714,10 @@ static std::optional<std::filesystem::path> prepare_cuda_late_ptx_dir(
 		     std::filesystem::directory_iterator(dir, ec)) {
 			if (ec)
 				break;
-			if (entry.is_regular_file() &&
-			    entry.path().string().ends_with(".ptx")) {
-				std::filesystem::remove(entry.path(), ec);
+			if (entry.is_regular_file()) {
+				auto s = entry.path().string();
+				if (s.size() >= 4 && s.compare(s.size()-4, 4, ".ptx") == 0)
+					std::filesystem::remove(entry.path(), ec);
 			}
 		}
 		ok = run_extract(cand);
@@ -730,8 +731,9 @@ static std::optional<std::filesystem::path> prepare_cuda_late_ptx_dir(
 				break;
 			if (!entry.is_regular_file())
 				continue;
-			if (entry.path().string().ends_with(".ptx"))
-				ptx_count++;
+			{ auto s = entry.path().string();
+			  if (s.size() >= 4 && s.compare(s.size()-4, 4, ".ptx") == 0)
+				ptx_count++; }
 		}
 		if (ptx_count > 0) {
 			spdlog::info(

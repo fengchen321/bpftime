@@ -59,4 +59,4 @@ else()
   endif()
 endif()
 
-install(TARGETS bpftimetool CONFIGURATIONS Release Debug RelWithDebInfo DESTINATION ~/.bpftime)
+install(TARGETS bpftimetool CONFIGURATIONS Release Debug RelWithDebInfo DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

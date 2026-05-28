@@ -236,7 +236,7 @@ if(${BPFTIME_BUILD_STATIC_LIB})
   )
 
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libbpftime.a
-    DESTINATION ~/.bpftime
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
   )
 endif()
 
@@ -258,7 +258,7 @@ endif()
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
-set(DEST_DIR "$ENV{HOME}/.bpftime")
+set(DEST_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 if(${BPFTIME_BUILD_WITH_LIBBPF})
   install(TARGETS bpftime-agent bpftime_text_segment_transformer bpftime-syscall-server CONFIGURATIONS Release Debug RelWithDebInfo DESTINATION ${DEST_DIR})

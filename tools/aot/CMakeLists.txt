@@ -28,4 +28,4 @@ target_compile_definitions(bpftime-aot-cli PRIVATE _GNU_SOURCE)
 
 add_dependencies(bpftime-aot-cli spdlog::spdlog argparse bpftime_vm_compat bpftime_llvm_vm libbpf)
 
-install(TARGETS bpftime-aot-cli CONFIGURATIONS Release Debug RelWithDebInfo DESTINATION ~/.bpftime)
+install(TARGETS bpftime-aot-cli CONFIGURATIONS Release Debug RelWithDebInfo DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

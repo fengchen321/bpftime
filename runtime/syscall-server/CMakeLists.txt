@@ -29,6 +29,7 @@ target_link_libraries(bpftime-syscall-server PUBLIC
     -lpthread
     -lm
     -ldl
+    -lrt
     spdlog::spdlog)
 
 add_dependencies(bpftime-syscall-server spdlog::spdlog)

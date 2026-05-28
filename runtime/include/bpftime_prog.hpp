@@ -53,7 +53,7 @@ class bpftime_prog {
 #ifdef BPFTIME_ENABLE_CUDA_ATTACH
 	bool is_cuda() const
 	{
-		return name.starts_with("cuda__");
+		return name.find("cuda__") == 0;
 	}
 	const void *get_cuda_elf_binary() const
 	{

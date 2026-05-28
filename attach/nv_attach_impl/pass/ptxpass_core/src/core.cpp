@@ -264,7 +264,7 @@ std::string filter_compiled_ptx_for_ebpf_program(std::string input)
 	for_each_line(input, [&](std::string_view line) {
 		bool skip = false;
 		for (const auto &prefix : FILTERED_OUT_PREFIXES) {
-			if (line.starts_with(prefix)) {
+			if (line.find(prefix) == 0) {
 				skip = true;
 				break;
 			}
