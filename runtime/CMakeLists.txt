@@ -166,6 +166,9 @@ if(UNIX AND NOT APPLE)
   target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_DL_LIBS})
 endif()
 
+# GCC 8.x libstdc++ needs -lstdc++fs for std::experimental::filesystem
+target_link_libraries(${PROJECT_NAME} PUBLIC stdc++fs)
+
 
 if(${BPFTIME_ENABLE_CUDA_ATTACH})
   include(../cmake/cuda.cmake)

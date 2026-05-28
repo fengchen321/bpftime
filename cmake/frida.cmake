@@ -1,5 +1,5 @@
 # add frida as external project
-set(FRIDA_DOWNLOAD_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/third_party/frida)
+set(FRIDA_DOWNLOAD_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/third_party/frida" CACHE PATH "Frida devkit tarball location")
 
 set(FRIDA_DOWNLOAD_URL_PREFIX "" CACHE STRING "The prefix added to the frida download url. For example, https://ghproxy.com/")
 
